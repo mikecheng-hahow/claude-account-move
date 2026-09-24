@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Claude 帳號搬家指南</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F5F7F9; --paper:#FFFFFF; --ink:#262626; --muted:#767677; --line:#E6E9EC;
+  --brand:#007A6B; --brand-ink:#FFFFFF; --brand-soft:#E3F7F4;
+  --teal:#007A6B; --teal-fill:#00CCB4; --teal-soft:#E3F7F4;
+  --red:#FF4D4F; --code-bg:#F3F4F6; --shade:rgba(20,22,25,.55);
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--ground);color:var(--ink);font:400 16px/1.8 var(--sans);padding-inline:16px;padding-block:0 72px;letter-spacing:.01em}
+.wrap{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{text-wrap:balance;margin:0;line-height:1.3}
+h1{font-size:2.1rem;font-weight:900;letter-spacing:-.01em}
+h2{font-size:1.25rem;font-weight:900}
+h3{font-size:1.02rem;font-weight:700}
+p,ul,ol{margin:0}
+ol,ul{padding-left:1.3em;display:flex;flex-direction:column;gap:4px}
+a{color:var(--teal)}
+code{font-family:var(--mono);font-size:.86em;background:var(--code-bg);padding:1px 5px;border-radius:4px;word-break:break-all}
+pre{font-family:var(--mono);font-size:.88em;background:var(--code-bg);padding:10px 14px;border-radius:4px;overflow-x:auto;margin:0}
+.muted{color:var(--muted);font-size:.92rem}
+
+header{padding-top:44px;display:flex;flex-direction:column;gap:10px}
+.tag{align-self:flex-start;font-size:.8rem;font-weight:700;letter-spacing:.08em;background:var(--brand);color:var(--brand-ink);padding:2px 10px;border-radius:4px}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.three div{background:var(--paper);border-radius:8px;padding:12px 14px;font-size:.93rem;line-height:1.6}
+.three b{display:block;font-weight:900;font-size:1rem;margin-bottom:2px}
+@media (max-width:560px){.three{grid-template-columns:1fr}}
+
+.pick,#guide{display:flex;flex-direction:column;gap:10px}
+#guide{gap:20px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:480px){.cards{grid-template-columns:1fr}}
+.card{font:inherit;text-align:left;color:var(--ink);background:var(--paper);border:2px solid var(--line);border-radius:8px;padding:14px 16px;cursor:pointer;display:flex;flex-direction:column;gap:2px}
+.card b{font-weight:900;font-size:1.05rem}
+.card span{color:var(--muted);font-size:.9rem;line-height:1.5}
+.card[aria-pressed="true"]{border-color:var(--teal-fill);background:var(--brand-soft)}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ground);padding-block:10px}
+.bar-row{display:flex;justify-content:space-between;font-size:.88rem;font-weight:500;margin-bottom:6px}
+.track{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.fill{height:100%;background:var(--teal-fill);width:0;transition:width .3s}
+
+.step{background:var(--paper);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:12px;border-top:4px solid transparent}
+.step.done{border-top-color:var(--teal-fill)}
+.head{display:flex;align-items:center;gap:12px}
+.num{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:900;background:var(--brand-soft);color:var(--teal)}
+.step.done .num{background:var(--brand);color:var(--brand-ink)}
+.warn{font-weight:700;border-left:4px solid var(--red);padding-left:10px}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;padding-top:12px;border-top:1px solid var(--line)}
+.done-row{display:flex;align-items:center;gap:10px;font-weight:700;cursor:pointer}
+input[type=checkbox]{width:20px;height:20px;accent-color:var(--teal-fill);flex:none}
+.tech{font:inherit;font-size:.88rem;color:var(--teal);background:none;border:1px solid var(--teal);border-radius:4px;padding:2px 12px;cursor:pointer}
+
+.prompt{display:flex;flex-direction:column;gap:8px;background:var(--brand-soft);border-radius:4px;padding:12px 14px}
+.prompt button{align-self:flex-start;font:inherit;font-size:.85rem;font-weight:700;padding:3px 14px;border-radius:4px;border:none;background:var(--brand);color:var(--brand-ink);cursor:pointer}
+
+.checks{list-style:none;padding:0;gap:8px}
+.checks label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.checks input{margin-top:5px}
+.finish{background:var(--teal-soft);border-radius:4px;padding:12px 14px;font-weight:500}
+.bottom{display:flex;flex-wrap:wrap;gap:16px;align-items:center;font-size:.9rem}
+.link{font:inherit;background:none;border:none;color:var(--muted);text-decoration:underline;cursor:pointer;padding:0}
+
+dialog{border:none;padding:0;width:min(720px,100%);max-width:100%;max-height:100%;height:100%;margin:0 0 0 auto;background:var(--paper);color:var(--ink)}
+dialog::backdrop{background:var(--shade)}
+.dlg{display:flex;flex-direction:column;height:100%}
+.dlg-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 20px;padding-top:calc(16px + env(safe-area-inset-top,0px));border-bottom:1px solid var(--line)}
+.close{font:inherit;font-weight:700;background:var(--brand);color:var(--brand-ink);border:none;border-radius:4px;padding:4px 14px;cursor:pointer}
+.dlg-body{overflow-y:auto;padding:20px;padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:26px}
+.dlg-body section{display:flex;flex-direction:column;gap:8px;scroll-margin-top:12px}
+.dlg-body h3 .t{display:inline-block;font-size:.8rem;background:var(--brand);color:var(--brand-ink);border-radius:4px;padding:0 7px;margin-right:6px;vertical-align:2px}
+.date{color:var(--muted);font-size:.85em;white-space:nowrap}
+@media (prefers-reduced-motion: reduce){.fill{transition:none}}
+</style>
+<style>html,body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+
+<div class="wrap">
+<header>
+  <span class="tag">個人帳號 → 公司帳號</span>
+  <h1>Claude 帳號搬家指南</h1>
+  <p>照著做、每步打勾就好。進度會記在這台電腦的瀏覽器裡。</p>
+  <p class="muted">個人帳號本來就是用公司 email 註冊的？官方有自動併入流程，不用照這頁做，看<a href="https://support.claude.com/en/articles/9267400-move-your-personal-claude-account-to-a-team-or-enterprise-organization" target="_blank" rel="noopener">官方說明</a>。</p>
+</header>
+
+<div class="three">
+  <div><b>要手動搬</b>官方沒有一鍵搬家。</div>
+  <div><b>歸公司管</b>私人內容可以留在個人帳號，它不會消失。</div>
+  <div><b>對話搬不走</b>能搬的是記憶和專案。</div>
+</div>
+
+<section class="pick" aria-labelledby="pick-title">
+  <h2 id="pick-title">你是哪一種使用者？</h2>
+  <div class="cards">
+    <button type="button" class="card" id="who-desktop" data-who="desktop"><b>只用桌面版和網頁版</b><span>大部分人是這種，只看步驟就好</span></button>
+    <button type="button" class="card" id="who-terminal" data-who="terminal"><b>用終端機＋桌面版</b><span>會在終端機打 <code>claude</code>，附完整技術說明</span></button>
+  </div>
+</section>
+
+<div id="guide" hidden>
+<div class="bar" aria-live="polite">
+  <div class="bar-row"><span id="mode">搬家進度</span><span id="count">0 / 5 步</span></div>
+  <div class="track"><div class="fill" id="fill"></div></div>
+</div>
+
+<section class="step" data-step="export">
+  <div class="head"><span class="num">1</span><h2>下載個人帳號的資料</h2></div>
+  <ol>
+    <li>用個人帳號登入 claude.ai，到 Settings &gt; Privacy &gt; Export data，按匯出。</li>
+    <li>收到 email 後，開一個無痕視窗、只登入個人帳號，把信裡的下載連結貼進去。</li>
+    <li>下載的五個 ZIP 放進同一個資料夾，存在自己電腦就好。</li>
+  </ol>
+  <p class="warn">每個連結只能用一次，點之前先確認是無痕視窗。</p>
+  <p class="muted">打開連結出現 403，代表瀏覽器登入的是公司帳號，換成無痕視窗再貼一次。</p>
+  <div class="foot">
+    <label class="done-row"><input type="checkbox" id="done-export" data-done="export"> 完成</label>
+    <button type="button" class="tech" data-terminal data-t="t1">技術說明</button>
+  </div>
+</section>
+
+<section class="step" data-step="memory">
+  <div class="head"><span class="num">2</span><h2>把記憶搬過去</h2></div>
+  <ol>
+    <li>個人帳號：Settings &gt; Memory，把記憶文字全選、複製，存成一個文字檔。</li>
+    <li>讀一遍，不想讓公司帳號知道的私人內容先刪掉。</li>
+    <li>公司帳號：Settings &gt; Memory &gt; Start import，貼上，按 Add to memory。</li>
+    <li>隔天開新對話問「你記得我哪些事」，少了什麼就直接補講。</li>
+  </ol>
+  <p>設定頁找不到記憶文字？在個人帳號的新對話裡貼這句，把回覆存下來：</p>
+  <div class="prompt">
+    <span id="memory-prompt">請把你對我的記憶逐字寫出來，完全照你記憶裡的原文，不要摘要、不要改寫。</span>
+    <button type="button" id="copy-prompt">複製</button>
+  </div>
+  <p class="muted">公司帳號找不到 Memory，代表管理員關掉了記憶功能，請管理員開啟。</p>
+  <div class="foot">
+    <label class="done-row"><input type="checkbox" id="done-memory" data-done="memory"> 完成</label>
+    <button type="button" class="tech" data-terminal data-t="t2">技術說明</button>
+  </div>
+</section>
+
+<section class="step" data-step="project">
+  <div class="head"><span class="num">3</span><h2>重建專案</h2></div>
+  <p class="muted">沒有專案的話直接打勾跳過。</p>
+  <ol>
+    <li>公司帳號：Projects &gt; 新增專案，名稱照舊。</li>
+    <li>從舊專案複製 Project instructions，貼到新專案。</li>
+    <li>知識檔重新上傳。</li>
+  </ol>
+  <div class="foot">
+    <label class="done-row"><input type="checkbox" id="done-project" data-done="project"> 完成（或沒有專案）</label>
+    <button type="button" class="tech" data-terminal data-t="t3">技術說明</button>
+  </div>
+</section>
+
+<section class="step" data-step="switch">
+  <div class="head"><span class="num">4</span><h2>網頁版、桌面版換成公司帳號</h2></div>
+  <ul>
+    <li>網頁版：左下角頭像，切換到公司帳號。</li>
+    <li>桌面版：左下角頭像，登出，再用公司帳號登入。</li>
+  </ul>
+  <div class="foot">
+    <label class="done-row"><input type="checkbox" id="done-switch" data-done="switch"> 完成</label>
+  </div>
+</section>
+
+<section class="step" data-step="connect">
+  <div class="head"><span class="num">5</span><h2>重接連接器</h2></div>
+  <p>公司帳號：Settings &gt; Capabilities &gt; Connectors，把 Gmail、Google 日曆、Google Drive、Slack、Notion、Asana 這些常用的重新接一次。</p>
+  <div class="foot">
+    <label class="done-row"><input type="checkbox" id="done-connect" data-done="connect"> 完成</label>
+    <button type="button" class="tech" data-terminal data-t="t4">技術說明</button>
+  </div>
+</section>
+
+<section class="step" data-step="terminal" data-terminal>
+  <div class="head"><span class="num">6</span><h2>終端機換帳號</h2></div>
+  <ol>
+    <li>在 Claude Code 裡打 <code>/logout</code>，再打 <code>claude</code> 重新登入，選公司組織。</li>
+    <li>打 <code>/status</code>，看到公司 email 就成功了。</li>
+    <li>有裝需要瀏覽器登入的 MCP，打 <code>/mcp</code> 重新授權。</li>
+    <li>有用雲端環境或雲端排程的，照技術說明重設。</li>
+  </ol>
+  <div class="foot">
+    <label class="done-row"><input type="checkbox" id="done-terminal" data-done="terminal"> 完成</label>
+    <button type="button" class="tech" data-terminal data-t="t5">技術說明</button>
+  </div>
+</section>
+
+<section class="step" data-step="verify">
+  <div class="head"><span class="num">✓</span><h2>最後檢查</h2></div>
+  <ul class="checks">
+    <li><label><input type="checkbox" id="v-memory" data-check> 公司帳號隔天記得你的重要資訊</label></li>
+    <li><label><input type="checkbox" id="v-project" data-check> 要搬的專案都在公司帳號（沒有專案就勾）</label></li>
+    <li><label><input type="checkbox" id="v-org" data-check> 網頁版、桌面版左下角都是公司帳號</label></li>
+    <li><label><input type="checkbox" id="v-connector" data-check> 公司帳號叫得到常用的連接器（例如請它查一封 Gmail）</label></li>
+    <li data-terminal><label><input type="checkbox" id="v-status" data-check> 終端機 <code>/status</code> 顯示公司 email</label></li>
+  </ul>
+  <p class="finish" id="finish" hidden>全部完成，搬家成功。個人帳號還在，想翻舊對話隨時回得去。</p>
+</section>
+
+<div class="bottom">
+  <button type="button" class="link" data-terminal data-t="t1">看全部技術說明與官方來源</button>
+  <button type="button" class="link" id="reset">清除勾選重新開始</button>
+</div>
+</div>
+<p class="muted">版本 2026-09-23 v3。依 2026-09 一次真實搬家的實測寫成，畫面跟這頁不一樣時，以你看到的為準。</p>
+</div>
+
+<dialog id="tech" aria-labelledby="tech-title">
+  <div class="dlg">
+    <div class="dlg-head"><h2 id="tech-title">技術說明</h2><button type="button" class="close" id="close-tech">關閉</button></div>
+    <div class="dlg-body">
+      <section id="t1">
+        <h3><span class="t">T1</span>下載匯出檔</h3>
+        <ul>
+          <li>匯出會拿到一個 <code>manifest.json</code> 加五個 ZIP：<code>light_metadata</code>、<code>projects</code>、<code>memories</code>、<code>design_chats</code>、<code>conversations</code>。<span class="date">2026-09-08 實測</span></li>
+          <li>打開連結出現 403，多半是瀏覽器登入的是公司帳號，換成只登入個人帳號的無痕視窗再貼。<span class="date">2026-09-07 實測</span></li>
+          <li>不要從 Mail app 的預覽視窗直接點，複製網址到無痕視窗貼。</li>
+          <li>每個連結只能用一次。點錯帳號、下載失敗、放太久，都要回 Export data 重新匯出。<span class="date">2026-09-08 實測</span></li>
+          <li>匯出檔是你全部對話的原文，不要上傳到公司共用雲端或 Git。</li>
+          <li>官方文件寫匯出不含記憶，但實測已經有 <code>memories</code> ZIP。<span class="date">2026-09-07 查證／09-08 實測</span></li>
+        </ul>
+      </section>
+      <section id="t2">
+        <h3><span class="t">T2</span>記憶</h3>
+        <ul>
+          <li>舊版介面的記憶在 Settings &gt; Capabilities &gt; View and edit your memory；公司帳號的 Start import 在中文介面可能叫「開始匯入」。</li>
+          <li>第三種拿法：解開 <code>memories</code> ZIP，用文字編輯器打開 JSON，複製 <code>conversations_memory</code> 欄位引號裡那段，把 <code>\n</code> 換成換行。</li>
+          <li>官方說匯入後最多 24 小時生效，功能標為實驗性，偏向保留工作內容，私人細節可能被過濾，所以隔天要回來問一次。</li>
+          <li>公司帳號找不到 Memory：管理員可以整個關掉記憶功能，請管理員開。</li>
+        </ul>
+      </section>
+      <section id="t3">
+        <h3><span class="t">T3</span>專案</h3>
+        <ul>
+          <li>知識檔找不到原檔的話，它們在匯出檔的 <code>projects</code> ZIP 裡，要用腳本才好拆（見 T6），可以找會用終端機的同事幫忙。</li>
+          <li>舊專案的對話搬不過去。要延續的，把重點整理成文件，當知識檔上傳。</li>
+        </ul>
+      </section>
+      <section id="t4">
+        <h3><span class="t">T4</span>連接器</h3>
+        <ul>
+          <li>連接器是綁在帳號上的授權，個人帳號接過的不會跟過來。</li>
+          <li>Team 目錄裡找不到 Gamma、Adobe、Artlist、Microsoft 365，以你登入後看到的為準。<span class="date">2026-09 實測</span></li>
+          <li>目錄裡沒有的自訂連接器，只有 Team 管理員能加。</li>
+        </ul>
+      </section>
+      <section id="t5">
+        <h3><span class="t">T5</span>終端機（Claude Code）</h3>
+        <ul>
+          <li>不用搬的：<code>~/.claude/settings.json</code>、外掛、skill、CLAUDE.md、自動記憶、歷史紀錄都在你電腦上，跟帳號無關。</li>
+          <li>登入畫面選「Claude account with subscription」，瀏覽器授權時選公司組織。</li>
+          <li>官方文件寫明，<code>/logout</code> 也會清掉 MCP 的 OAuth 登入和外掛的機密資料。用 API key 或本機程式跑的 MCP（stdio 型）不受影響；用瀏覽器登入的，設定還在但要到 <code>/mcp</code> 重新授權。<span class="date">2026-09-13 查證</span></li>
+          <li>claude.ai 上接的連接器不用另外設，公司帳號授權完，Claude Code 下次啟動會自動帶進來。</li>
+          <li>連接器在網頁版能用、Claude Code 呼叫卻回 <code>permission_error</code>：可能是管理員在組織設定裡把它設成需要核准或封鎖。這條是依官方文件推測，還沒確認，找管理員對照設定。</li>
+          <li>雲端環境：<code>~/.claude/settings.json</code> 裡如果有 <code>remote.defaultEnvironmentId</code>，換帳號後會失效。先備份檔案再刪掉這行，第一次跑 <code>claude --cloud</code> 或開 claude.ai/code 時會自動重建。多台電腦只在第一台建，其他台填同一個環境 ID。</li>
+          <li>雲端排程：<code>/schedule</code> 建的排程屬於個人帳號，要在公司帳號重建。多台電腦只建一次，否則同一件事每天會跑好幾次。新建的排程會被自動掛上 Gmail、Google Drive、日曆等連接器，用不到就清掉。<span class="date">2026-09-10 實測</span></li>
+          <li>兩個帳號並存：設環境變數 <code>CLAUDE_CONFIG_DIR</code> 指到另一個資料夾（例如 <code>~/.claude-personal</code>），用它開的 Claude Code 就是另一個登入。代價是設定、外掛、記憶也跟著分開。官方文件有寫，實測可以並存。<span class="date">2026-09-14 實測</span></li>
+        </ul>
+      </section>
+      <section id="t6">
+        <h3><span class="t">T6</span>用腳本拆解匯出檔</h3>
+        <p>有一支 Python 腳本 <code>split_export.py</code>，把五個 ZIP 拆成一個專案一個資料夾，記憶也整理成可以直接貼的文字檔。需要的話向這份指南的作者索取。</p>
+        <pre>python3 split_export.py ~/Documents/claude-export-日期/</pre>
+        <p>先看輸出裡的 <code>SUMMARY.txt</code>，<code>[注意]</code> 開頭的行代表有看不懂的格式。輸出是全部對話原文，不要放進會自動同步的資料夾。</p>
+      </section>
+      <section id="t7">
+        <h3><span class="t">T7</span>已知差異 <span class="date">2026-09 實測，以你登入後看到的為準</span></h3>
+        <ul>
+          <li>Team 席次網頁版預設模型顯示 Opus 5，桌面版 Cowork 顯示 Sonnet 5。</li>
+          <li>連接器目錄少了 Gamma、Adobe、Artlist、Microsoft 365。</li>
+          <li>個人帳號本來就是用公司 email 註冊的，官方有自動併入流程，不用照這份做（見第一個來源）。</li>
+        </ul>
+      </section>
+      <section id="src">
+        <h3>官方來源 <span class="date">2026-09-07 查證，Claude Code 相關為 2026-09-13</span></h3>
+        <ul>
+          <li><a href="https://support.claude.com/en/articles/9267400-move-your-personal-claude-account-to-a-team-or-enterprise-organization" target="_blank" rel="noopener">Move your personal Claude account to a Team or Enterprise organization</a></li>
+          <li><a href="https://support.claude.com/en/articles/13566435-find-and-join-a-team-or-enterprise-organization" target="_blank" rel="noopener">Find and join a Team or Enterprise organization</a></li>
+          <li><a href="https://support.claude.com/en/articles/13133750-manage-members-on-team-and-enterprise-plans" target="_blank" rel="noopener">Manage members on Team and Enterprise plans</a></li>
+          <li><a href="https://support.claude.com/en/articles/8452276-how-do-i-change-the-email-address-associated-with-my-account" target="_blank" rel="noopener">How do I change the email address associated with my account?</a></li>
+          <li><a href="https://support.claude.com/en/articles/9450526-how-can-i-export-my-claude-data" target="_blank" rel="noopener">Export your Claude data</a></li>
+          <li><a href="https://support.claude.com/en/articles/12123587-import-and-export-your-memory-from-claude" target="_blank" rel="noopener">Import and export your memory from Claude</a></li>
+          <li><a href="https://support.claude.com/en/articles/9265372-who-owns-and-manages-the-data-of-my-team" target="_blank" rel="noopener">Who owns and manages the data of my team</a></li>
+          <li><a href="https://code.claude.com/docs/en/authentication" target="_blank" rel="noopener">Claude Code Authentication</a></li>
+          <li><a href="https://code.claude.com/docs/en/claude-code-on-the-web" target="_blank" rel="noopener">Use Claude Code on the web</a></li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</dialog>
+
+<script>
+(function(){
+  var KEY = 'claude-move-guide-v3';
+  function fresh(){ return {who:null, done:{}, checks:{}}; }
+  var state = fresh();
+  try { var s = JSON.parse(localStorage.getItem(KEY)); if (s && s.done) state = {who: s.who || null, done: s.done, checks: s.checks || {}}; } catch(e) {}
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {} }
+
+  function render(){
+    var term = state.who === 'terminal';
+    document.getElementById('guide').hidden = !state.who;
+    document.getElementById('mode').textContent = term ? '終端機＋桌面版指南・進度' : '桌面版和網頁版指南・進度';
+    document.querySelectorAll('.card').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.who === state.who)); });
+    document.querySelectorAll('[data-terminal]').forEach(function(el){ el.hidden = !term; });
+    var steps = Array.prototype.filter.call(document.querySelectorAll('[data-done]'), function(cb){ return !cb.closest('.step').hidden; });
+    var n = 0;
+    steps.forEach(function(cb){
+      cb.checked = !!state.done[cb.dataset.done];
+      cb.closest('.step').classList.toggle('done', cb.checked);
+      if (cb.checked) n++;
+    });
+    var checks = Array.prototype.filter.call(document.querySelectorAll('[data-check]'), function(cb){ return !cb.closest('li').hidden; });
+    checks.forEach(function(cb){ cb.checked = !!state.checks[cb.id]; });
+    var allChecked = checks.every(function(cb){ return cb.checked; });
+    document.getElementById('count').textContent = n + ' / ' + steps.length + ' 步';
+    document.getElementById('fill').style.width = (n / steps.length * 100) + '%';
+    document.querySelector('[data-step="verify"]').classList.toggle('done', allChecked);
+    document.getElementById('finish').hidden = !(allChecked && n === steps.length);
+  }
+
+  document.querySelectorAll('.card').forEach(function(b){
+    b.addEventListener('click', function(){ state.who = b.dataset.who; save(); render(); document.getElementById('guide').scrollIntoView({block:'start'}); });
+  });
+  document.querySelectorAll('[data-done]').forEach(function(cb){
+    cb.addEventListener('change', function(){ state.done[cb.dataset.done] = cb.checked; save(); render(); });
+  });
+  document.querySelectorAll('[data-check]').forEach(function(cb){
+    cb.addEventListener('change', function(){ state.checks[cb.id] = cb.checked; save(); render(); });
+  });
+  document.getElementById('reset').addEventListener('click', function(){ state = fresh(); save(); render(); });
+
+  var dlg = document.getElementById('tech');
+  document.querySelectorAll('[data-t]').forEach(function(b){
+    b.addEventListener('click', function(){
+      if (dlg.showModal) { if (!dlg.open) dlg.showModal(); } else dlg.setAttribute('open', '');
+      var target = document.getElementById(b.dataset.t);
+      if (target) target.scrollIntoView({block:'start'});
+    });
+  });
+  document.getElementById('close-tech').addEventListener('click', function(){ dlg.close ? dlg.close() : dlg.removeAttribute('open'); });
+  dlg.addEventListener('click', function(e){ if (e.target === dlg && dlg.close) dlg.close(); });
+
+  var copyBtn = document.getElementById('copy-prompt');
+  copyBtn.addEventListener('click', function(){
+    var el = document.getElementById('memory-prompt');
+    function selectText(){ var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); copyBtn.textContent = '已選取，按 Cmd+C 複製'; }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(el.textContent).then(function(){ copyBtn.textContent = '已複製'; }, selectText);
+    } else selectText();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
