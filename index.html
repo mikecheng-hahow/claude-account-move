@@ -6,144 +6,249 @@
 <meta name="robots" content="noindex">
 <title>Claude 帳號搬家指南</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap">
 <style>
+/* Layout：滿版搬家看板。桌機上方是「標題＋搬家清單 | AI 帶你做」雙欄，下方是「進度側欄 | 步驟雙欄」；手機全部疊成一欄。
+   配色走 hahow.in 主站青綠，只做淺色版（Mike 2026-09-23 裁示）。 */
 :root{
-  --ground:#F5F7F9; --paper:#FFFFFF; --ink:#262626; --muted:#767677; --line:#E6E9EC;
-  --brand:#007A6B; --brand-ink:#FFFFFF; --brand-soft:#E3F7F4;
-  --teal:#007A6B; --teal-fill:#00CCB4; --teal-soft:#E3F7F4;
-  --red:#FF4D4F; --code-bg:#F3F4F6; --shade:rgba(20,22,25,.55);
+  --ground:#F2F5F7; --paper:#FFFFFF; --ink:#1F2A2E; --muted:#68757A; --line:#DFE5E8;
+  --brand:#007A6B; --brand-ink:#FFFFFF; --brand-soft:#E3F7F4; --teal-fill:#00CCB4;
+  --deep:#0E3B36; --deep-ink:#EAFBF8; --deep-muted:#9CC9C2;
+  --red:#D93A3C; --code-bg:#EEF2F4; --shade:rgba(14,30,28,.55);
   --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",-apple-system,BlinkMacSystemFont,sans-serif;
   --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --gutter:clamp(16px,4vw,72px);
+  --radius:10px;
   color-scheme:light;
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-body{background:var(--ground);color:var(--ink);font:400 16px/1.8 var(--sans);padding-inline:16px;padding-block:0 72px;letter-spacing:.01em}
-.wrap{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
-h1,h2,h3{text-wrap:balance;margin:0;line-height:1.3}
-h1{font-size:2.1rem;font-weight:900;letter-spacing:-.01em}
-h2{font-size:1.25rem;font-weight:900}
-h3{font-size:1.02rem;font-weight:700}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--ground);color:var(--ink);font:400 16px/1.8 var(--sans);letter-spacing:.01em;margin:0;padding-inline:var(--gutter);padding-block:0 96px}
+h1,h2,h3{text-wrap:balance;margin:0;line-height:1.25}
+h2{font-size:1.3rem;font-weight:900}
+h3{font-size:1rem;font-weight:700}
 p,ul,ol{margin:0}
-ol,ul{padding-left:1.3em;display:flex;flex-direction:column;gap:4px}
-a{color:var(--teal)}
-code{font-family:var(--mono);font-size:.86em;background:var(--code-bg);padding:1px 5px;border-radius:4px;word-break:break-all}
-pre{font-family:var(--mono);font-size:.88em;background:var(--code-bg);padding:10px 14px;border-radius:4px;overflow-x:auto;margin:0}
+ol,ul{padding-left:1.3em;display:flex;flex-direction:column;gap:6px}
+a{color:var(--brand)}
+code{font-family:var(--mono);font-size:.86em;background:var(--code-bg);padding:1px 6px;border-radius:4px;overflow-wrap:anywhere}
+pre{font-family:var(--mono);font-size:.88em;background:var(--code-bg);padding:10px 14px;border-radius:6px;overflow-x:auto;margin:0}
 .muted{color:var(--muted);font-size:.92rem}
+.eyebrow{font-family:var(--mono);font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--brand)}
+button{font:inherit}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
+.page{display:flex;flex-direction:column;gap:clamp(40px,5vw,72px)}
 
-header{padding-top:44px;display:flex;flex-direction:column;gap:10px}
-.tag{align-self:flex-start;font-size:.8rem;font-weight:700;letter-spacing:.08em;background:var(--brand);color:var(--brand-ink);padding:2px 10px;border-radius:4px}
-.three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.three div{background:var(--paper);border-radius:8px;padding:12px 14px;font-size:.93rem;line-height:1.6}
-.three b{display:block;font-weight:900;font-size:1rem;margin-bottom:2px}
-@media (max-width:560px){.three{grid-template-columns:1fr}}
-.ai{background:var(--paper);border-radius:8px;padding:16px 20px;display:flex;flex-direction:column;gap:8px;border-top:4px solid var(--teal-fill)}
-.ai h3{margin-top:4px}
-.ai .prompt span{word-break:break-all}
+/* ── Hero ── */
+.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:start;padding-top:clamp(36px,6vw,88px)}
+.hero-main{display:flex;flex-direction:column;gap:20px;min-width:0}
+.route{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-weight:700;font-size:.9rem}
+.route .acct{border:1.5px solid var(--ink);border-radius:999px;padding:3px 14px;background:var(--paper)}
+.route .acct.to{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.route .arrow{font-family:var(--mono);color:var(--brand)}
+h1{font-size:clamp(2.4rem,5.2vw,4.6rem);font-weight:900;letter-spacing:-.02em;line-height:1.08}
+h1 .line{display:block}
+h1 .accent{color:var(--brand)}
+.lead{font-size:clamp(1.02rem,1.3vw,1.15rem);max-width:34em}
 
-.pick,#guide{display:flex;flex-direction:column;gap:10px}
-#guide{gap:20px}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media (max-width:480px){.cards{grid-template-columns:1fr}}
-.card{font:inherit;text-align:left;color:var(--ink);background:var(--paper);border:2px solid var(--line);border-radius:8px;padding:14px 16px;cursor:pointer;display:flex;flex-direction:column;gap:2px}
-.card b{font-weight:900;font-size:1.05rem}
-.card span{color:var(--muted);font-size:.9rem;line-height:1.5}
-.card[aria-pressed="true"]{border-color:var(--teal-fill);background:var(--brand-soft)}
-button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+/* 搬家清單：什麼搬得走、什麼要重接、什麼留下 */
+.manifest{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.manifest div{background:var(--paper);padding:16px 18px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.manifest .k{font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:.12em;color:var(--muted)}
+.manifest .v{font-weight:900;font-size:1.05rem}
+.manifest .d{font-size:.88rem;color:var(--muted);line-height:1.6}
+.manifest .go .v{color:var(--brand)}
+.manifest .stay .v{color:var(--muted)}
 
-.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ground);padding-block:10px}
-.bar-row{display:flex;justify-content:space-between;font-size:.88rem;font-weight:500;margin-bottom:6px}
-.track{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+/* AI 帶你做（深色主卡） */
+.ai{background:var(--deep);color:var(--deep-ink);border-radius:calc(var(--radius) + 4px);padding:clamp(22px,2.6vw,36px);display:flex;flex-direction:column;gap:22px;min-width:0}
+.ai .eyebrow{color:var(--teal-fill)}
+.ai h2{font-size:clamp(1.4rem,2vw,1.8rem)}
+.ai-paths{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.ai-path{display:flex;flex-direction:column;gap:10px;min-width:0}
+.ai-path h3{font-size:.95rem;color:var(--teal-fill)}
+.ai-path ol{list-style:none;padding:0;gap:10px;counter-reset:n}
+.ai-path li{counter-increment:n;position:relative;padding-left:38px;min-height:26px;line-height:1.6;font-size:.95rem}
+.ai-path li::before{position:absolute;left:0;top:0;content:counter(n);font-family:var(--mono);font-weight:700;font-size:.78rem;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--deep-muted);color:var(--deep-ink)}
+.ai code{background:rgba(255,255,255,.12);color:var(--deep-ink)}
+.ai .note{font-size:.88rem;color:var(--deep-muted)}
+
+/* 提示句：文字靠左、複製鈕靠右 */
+.prompt{display:flex;align-items:center;justify-content:space-between;gap:20px;border-radius:var(--radius);padding:16px 16px 16px 20px;background:var(--brand-soft);color:var(--ink)}
+.prompt-text{flex:1 1 auto;min-width:0;text-align:left;line-height:1.7;overflow-wrap:anywhere}
+.ai .prompt-text .url{color:var(--teal-fill);font-weight:500}
+.ai .prompt{background:rgba(255,255,255,.08);color:var(--deep-ink);border:1px solid rgba(255,255,255,.16)}
+.copy{flex:none;align-self:center;font-weight:700;font-size:.9rem;padding:9px 18px;border-radius:8px;border:none;background:var(--brand);color:var(--brand-ink);cursor:pointer;white-space:nowrap;transition:background .15s}
+.copy:hover{background:var(--deep)}
+.ai .copy{background:var(--teal-fill);color:var(--deep)}
+.ai .copy:hover{background:var(--paper)}
+
+/* ── 選擇使用者 ── */
+.pick{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,2fr);gap:clamp(20px,3vw,48px);align-items:center;border-top:1px solid var(--line);padding-top:clamp(28px,3vw,44px)}
+.pick-head{display:flex;flex-direction:column;gap:8px}
+.pick-head h2{font-size:clamp(1.4rem,2.2vw,2rem)}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.card{text-align:left;color:var(--ink);background:var(--paper);border:2px solid var(--line);border-radius:var(--radius);padding:20px 22px;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;align-items:center;transition:border-color .15s,transform .15s}
+.card:hover{border-color:var(--teal-fill);transform:translateY(-2px)}
+.card b{font-weight:900;font-size:1.15rem}
+.card span{grid-column:1;color:var(--muted);font-size:.92rem;line-height:1.5}
+.card .steps-n{font-style:normal;grid-column:2;grid-row:1/3;font-family:var(--mono);font-weight:700;font-size:.8rem;color:var(--brand);border:1.5px solid currentColor;border-radius:999px;padding:2px 10px;white-space:nowrap}
+.card[aria-pressed="true"]{border-color:var(--brand);background:var(--brand-soft)}
+@media (prefers-reduced-motion:reduce){.card,.card:hover{transition:none;transform:none}}
+
+/* ── 指南：側欄＋步驟 ── */
+#guide{display:grid;grid-template-columns:260px minmax(0,1fr);gap:clamp(24px,3vw,48px);align-items:start}
+.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 24px);display:flex;flex-direction:column;gap:18px}
+.bar-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:.85rem;font-weight:700}
+#count{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--brand)}
+.track{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
 .fill{height:100%;background:var(--teal-fill);width:0;transition:width .3s}
+.nav{list-style:none;padding:0;gap:2px;border-left:1px solid var(--line)}
+.nav a{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:center;padding:7px 12px;margin-left:-1px;border-left:2px solid transparent;text-decoration:none;color:var(--muted);font-size:.93rem;font-weight:500}
+.nav a:hover{color:var(--ink);border-left-color:var(--line)}
+.nav .n{font-family:var(--mono);font-size:.78rem;font-weight:700;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--paper);border:1px solid var(--line)}
+.nav a.done{color:var(--ink)}
+.nav a.done .n{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.side .reset{align-self:flex-start}
 
-.step{background:var(--paper);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:12px;border-top:4px solid transparent}
-.step.done{border-top-color:var(--teal-fill)}
-.head{display:flex;align-items:center;gap:12px}
-.num{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:900;background:var(--brand-soft);color:var(--teal)}
+.steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:stretch}
+.step{background:var(--paper);border-radius:var(--radius);padding:clamp(20px,2vw,28px);display:flex;flex-direction:column;gap:14px;border:1px solid var(--line);scroll-margin-top:24px;min-width:0;transition:border-color .2s}
+.step.done{border-color:var(--teal-fill);box-shadow:inset 0 3px 0 var(--teal-fill)}
+.step[data-step="verify"]{grid-column:1/-1}
+#guide[data-who="desktop"] .step[data-step="verify"]{grid-column:auto}
+.head{display:flex;align-items:center;gap:14px}
+.num{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-weight:700;background:var(--brand-soft);color:var(--brand)}
 .step.done .num{background:var(--brand);color:var(--brand-ink)}
-.warn{font-weight:700;border-left:4px solid var(--red);padding-left:10px}
-.foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;padding-top:12px;border-top:1px solid var(--line)}
+.warn{font-weight:700;border-left:3px solid var(--red);padding-left:12px}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;padding-top:14px;border-top:1px solid var(--line);margin-top:auto}
 .done-row{display:flex;align-items:center;gap:10px;font-weight:700;cursor:pointer}
-input[type=checkbox]{width:20px;height:20px;accent-color:var(--teal-fill);flex:none}
-.tech{font:inherit;font-size:.88rem;color:var(--teal);background:none;border:1px solid var(--teal);border-radius:4px;padding:2px 12px;cursor:pointer}
-
-.prompt{display:flex;flex-direction:column;gap:8px;background:var(--brand-soft);border-radius:4px;padding:12px 14px}
-.prompt button{align-self:flex-start;font:inherit;font-size:.85rem;font-weight:700;padding:3px 14px;border-radius:4px;border:none;background:var(--brand);color:var(--brand-ink);cursor:pointer}
-
-.checks{list-style:none;padding:0;gap:8px}
-.checks label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+input[type=checkbox]{width:20px;height:20px;accent-color:var(--brand);flex:none}
+.tech{font-size:.85rem;color:var(--brand);background:none;border:1px solid var(--brand);border-radius:6px;padding:3px 12px;cursor:pointer}
+.tech:hover{background:var(--brand-soft)}
+.checks{list-style:none;padding:0;gap:10px}
+.checks label{display:flex;gap:12px;align-items:flex-start;cursor:pointer}
 .checks input{margin-top:5px}
-.finish{background:var(--teal-soft);border-radius:4px;padding:12px 14px;font-weight:500}
-.bottom{display:flex;flex-wrap:wrap;gap:16px;align-items:center;font-size:.9rem}
-.link{font:inherit;background:none;border:none;color:var(--muted);text-decoration:underline;cursor:pointer;padding:0}
+.finish{background:var(--brand-soft);border-radius:8px;padding:14px 16px;font-weight:700;color:var(--deep)}
+.link{background:none;border:none;color:var(--muted);text-decoration:underline;cursor:pointer;padding:0;font-size:.88rem;text-align:left}
+.foot-note{border-top:1px solid var(--line);padding-top:20px}
 
-dialog{border:none;padding:0;width:min(720px,100%);max-width:100%;max-height:100%;height:100%;margin:0 0 0 auto;background:var(--paper);color:var(--ink)}
+/* 技術說明彈窗 */
+dialog{border:none;padding:0;width:min(760px,100%);max-width:100%;max-height:100%;height:100%;margin:0 0 0 auto;background:var(--paper);color:var(--ink)}
 dialog::backdrop{background:var(--shade)}
 .dlg{display:flex;flex-direction:column;height:100%}
-.dlg-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 20px;padding-top:calc(16px + env(safe-area-inset-top,0px));border-bottom:1px solid var(--line)}
-.close{font:inherit;font-weight:700;background:var(--brand);color:var(--brand-ink);border:none;border-radius:4px;padding:4px 14px;cursor:pointer}
-.dlg-body{overflow-y:auto;padding:20px;padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:26px}
+.dlg-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 24px;padding-top:calc(16px + env(safe-area-inset-top,0px));border-bottom:1px solid var(--line)}
+.close{font-weight:700;background:var(--brand);color:var(--brand-ink);border:none;border-radius:6px;padding:5px 16px;cursor:pointer}
+.dlg-body{overflow-y:auto;padding:24px;padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:28px}
 .dlg-body section{display:flex;flex-direction:column;gap:8px;scroll-margin-top:12px}
-.dlg-body h3 .t{display:inline-block;font-size:.8rem;background:var(--brand);color:var(--brand-ink);border-radius:4px;padding:0 7px;margin-right:6px;vertical-align:2px}
+.dlg-body h3 .t{display:inline-block;font-family:var(--mono);font-size:.78rem;background:var(--brand);color:var(--brand-ink);border-radius:4px;padding:0 7px;margin-right:6px;vertical-align:2px}
 .date{color:var(--muted);font-size:.85em;white-space:nowrap}
-@media (prefers-reduced-motion: reduce){.fill{transition:none}}
+
+/* ── 斷點 ── */
+@media (max-width:1080px){
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .pick{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:860px){
+  #guide{grid-template-columns:minmax(0,1fr)}
+  .side{display:contents}
+  .progress{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ground);padding-block:12px;margin-inline:calc(var(--gutter) * -1);padding-inline:var(--gutter);border-bottom:1px solid var(--line)}
+  .nav{display:none!important}
+  .steps{order:1}
+  .side .link{order:2}
+  .step{scroll-margin-top:80px}
+  .steps{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:620px){
+  .manifest,.ai-paths,.cards{grid-template-columns:minmax(0,1fr)}
+  .prompt{flex-direction:column;align-items:stretch;gap:12px}
+  .copy{align-self:flex-end}
+}
+@media (prefers-reduced-motion:reduce){.fill,.step{transition:none}}
 </style>
 <style>html,body{margin:0}img{max-width:100%}</style>
 </head>
 <body>
 
 
-<div class="wrap">
-<header>
-  <span class="tag">個人帳號 → 公司帳號</span>
-  <h1>Claude 帳號搬家指南</h1>
-  <p>照著做、每步打勾就好。進度會記在這台電腦的瀏覽器裡。</p>
-  <p class="muted">個人帳號本來就是用公司 email 註冊的？官方有自動併入流程，不用照這頁做，看<a href="https://support.claude.com/en/articles/9267400-move-your-personal-claude-account-to-a-team-or-enterprise-organization" target="_blank" rel="noopener">官方說明</a>。</p>
+<div class="page">
+<header class="hero">
+  <div class="hero-main">
+    <div class="route" aria-label="個人帳號搬到公司帳號"><span class="acct">個人帳號</span><span class="arrow" aria-hidden="true">──→</span><span class="acct to">公司帳號</span></div>
+    <h1><span class="line">Claude</span><span class="line">帳號<span class="accent">搬家</span>指南</span></h1>
+    <p class="lead">照著做、每步打勾就好。進度會記在這台電腦的瀏覽器裡。</p>
+    <div class="manifest" aria-label="這次搬家會發生什麼事">
+      <div class="go"><span class="k">搬得走</span><span class="v">記憶、專案</span><span class="d">官方沒有一鍵搬家，照步驟手動搬。</span></div>
+      <div><span class="k">要重接</span><span class="v">連接器</span><span class="d">Gmail、Slack 這些要在公司帳號重新授權。</span></div>
+      <div class="stay"><span class="k">搬不走</span><span class="v">舊對話</span><span class="d">留在個人帳號，個人帳號不會消失。</span></div>
+    </div>
+    <p class="muted">搬進公司帳號的東西歸公司管，私人內容可以留在個人帳號。</p>
+    <p class="muted">個人帳號本來就是用公司 email 註冊的？官方有自動併入流程，不用照這頁做，看<a href="https://support.claude.com/en/articles/9267400-move-your-personal-claude-account-to-a-team-or-enterprise-organization" target="_blank" rel="noopener">官方說明</a>。</p>
+  </div>
+
+  <section class="ai" aria-labelledby="ai-title">
+    <div>
+      <p class="eyebrow">看不懂？</p>
+      <h2 id="ai-title">讓 AI 帶你做</h2>
+    </div>
+    <div class="ai-paths">
+      <div class="ai-path">
+        <h3>只用桌面版和網頁版</h3>
+        <ol>
+          <li>開 claude.ai 網頁版，登入個人帳號</li>
+          <li>貼上下面那句，請 Claude 一步一步帶你做</li>
+          <li>開桌面版，登入公司帳號，跟著逐步完成</li>
+        </ol>
+      </div>
+      <div class="ai-path">
+        <h3>用終端機</h3>
+        <ol>
+          <li>終端機開 <code>claude</code>（還是個人帳號），貼上下面那句</li>
+          <li>開桌面版，登入公司帳號，跟著逐步完成</li>
+          <li>最後終端機重新登入公司帳號</li>
+        </ol>
+      </div>
+    </div>
+    <p class="note">終端機步驟比較少，資料都在自己電腦上，不會不見。</p>
+    <div class="prompt">
+      <span class="prompt-text" id="ai-prompt">請讀 <span class="url">https://mikecheng-hahow.github.io/claude-account-move/</span> ，照裡面的步驟一步一步帶我把 Claude 個人帳號搬到公司帳號。每次只講一步，等我說做完再講下一步。</span>
+      <button type="button" class="copy" data-copy="ai-prompt">複製這句</button>
+    </div>
+  </section>
 </header>
 
-<section class="ai" aria-labelledby="ai-title">
-  <h2 id="ai-title">看不懂？讓 AI 帶你做</h2>
-  <h3>只用桌面版和網頁版</h3>
-  <ol>
-    <li>開 claude.ai 網頁版，登入個人帳號</li>
-    <li>貼上下面那句，請 Claude 一步一步帶你做</li>
-    <li>開桌面版，登入公司帳號，跟著逐步完成</li>
-  </ol>
-  <h3>用終端機</h3>
-  <ol>
-    <li>終端機開 <code>claude</code>（還是個人帳號），貼上下面那句</li>
-    <li>開桌面版，登入公司帳號，跟著逐步完成</li>
-    <li>最後終端機重新登入公司帳號</li>
-  </ol>
-  <p class="muted">終端機步驟比較少，資料都在自己電腦上，不會不見。</p>
-  <div class="prompt">
-    <span id="ai-prompt">請讀 https://mikecheng-hahow.github.io/claude-account-move/ ，照裡面的步驟一步一步帶我把 Claude 個人帳號搬到公司帳號。每次只講一步，等我說做完再講下一步。</span>
-    <button type="button" data-copy="ai-prompt">複製這句</button>
-  </div>
-</section>
-
-<div class="three">
-  <div><b>要手動搬</b>官方沒有一鍵搬家。</div>
-  <div><b>歸公司管</b>私人內容可以留在個人帳號，它不會消失。</div>
-  <div><b>對話搬不走</b>能搬的是記憶和專案。</div>
-</div>
-
 <section class="pick" aria-labelledby="pick-title">
-  <h2 id="pick-title">你是哪一種使用者？</h2>
+  <div class="pick-head">
+    <p class="eyebrow">自己來</p>
+    <h2 id="pick-title">你是哪一種使用者？</h2>
+  </div>
   <div class="cards">
-    <button type="button" class="card" id="who-desktop" data-who="desktop"><b>只用桌面版和網頁版</b><span>大部分人是這種，只看步驟就好</span></button>
-    <button type="button" class="card" id="who-terminal" data-who="terminal"><b>用終端機＋桌面版</b><span>會在終端機打 <code>claude</code>，附完整技術說明</span></button>
+    <button type="button" class="card" id="who-desktop" data-who="desktop"><b>只用桌面版和網頁版</b><span>大部分人是這種，只看步驟就好</span><em class="steps-n">5 步</em></button>
+    <button type="button" class="card" id="who-terminal" data-who="terminal"><b>用終端機＋桌面版</b><span>會在終端機打 <code>claude</code>，附完整技術說明</span><em class="steps-n">6 步</em></button>
   </div>
 </section>
 
 <div id="guide" hidden>
-<div class="bar" aria-live="polite">
-  <div class="bar-row"><span id="mode">搬家進度</span><span id="count">0 / 5 步</span></div>
-  <div class="track"><div class="fill" id="fill"></div></div>
-</div>
+<aside class="side">
+  <div class="progress" aria-live="polite">
+    <div class="bar-row"><span id="mode">搬家進度</span><span id="count">0 / 5 步</span></div>
+    <div class="track"><div class="fill" id="fill"></div></div>
+  </div>
+  <ul class="nav">
+    <li><a href="#s-export" data-nav="export"><span class="n">1</span>下載個人帳號的資料</a></li>
+    <li><a href="#s-memory" data-nav="memory"><span class="n">2</span>把記憶搬過去</a></li>
+    <li><a href="#s-project" data-nav="project"><span class="n">3</span>重建專案</a></li>
+    <li><a href="#s-switch" data-nav="switch"><span class="n">4</span>網頁版、桌面版換帳號</a></li>
+    <li><a href="#s-connect" data-nav="connect"><span class="n">5</span>重接連接器</a></li>
+    <li data-terminal><a href="#s-terminal" data-nav="terminal"><span class="n">6</span>終端機換帳號</a></li>
+    <li><a href="#s-verify" data-nav="verify"><span class="n">✓</span>最後檢查</a></li>
+  </ul>
+  <button type="button" class="link" data-terminal data-t="t1">看全部技術說明與官方來源</button>
+  <button type="button" class="link reset" id="reset">清除勾選重新開始</button>
+</aside>
 
-<section class="step" data-step="export">
+<div class="steps">
+<section class="step" id="s-export" data-step="export">
   <div class="head"><span class="num">1</span><h2>下載個人帳號的資料</h2></div>
   <ol>
     <li>用個人帳號登入 claude.ai，到 Settings &gt; Privacy &gt; Export data，按匯出。</li>
@@ -158,7 +263,7 @@ dialog::backdrop{background:var(--shade)}
   </div>
 </section>
 
-<section class="step" data-step="memory">
+<section class="step" id="s-memory" data-step="memory">
   <div class="head"><span class="num">2</span><h2>把記憶搬過去</h2></div>
   <ol>
     <li>個人帳號：Settings &gt; Memory，把記憶文字全選、複製，存成一個文字檔。</li>
@@ -168,8 +273,8 @@ dialog::backdrop{background:var(--shade)}
   </ol>
   <p>設定頁找不到記憶文字？在個人帳號的新對話裡貼這句，把回覆存下來：</p>
   <div class="prompt">
-    <span id="memory-prompt">請把你對我的記憶逐字寫出來，完全照你記憶裡的原文，不要摘要、不要改寫。</span>
-    <button type="button" id="copy-prompt" data-copy="memory-prompt">複製</button>
+    <span class="prompt-text" id="memory-prompt">請把你對我的記憶逐字寫出來，完全照你記憶裡的原文，不要摘要、不要改寫。</span>
+    <button type="button" class="copy" id="copy-prompt" data-copy="memory-prompt">複製</button>
   </div>
   <p class="muted">公司帳號找不到 Memory，代表管理員關掉了記憶功能，請管理員開啟。</p>
   <div class="foot">
@@ -178,7 +283,7 @@ dialog::backdrop{background:var(--shade)}
   </div>
 </section>
 
-<section class="step" data-step="project">
+<section class="step" id="s-project" data-step="project">
   <div class="head"><span class="num">3</span><h2>重建專案</h2></div>
   <p class="muted">沒有專案的話直接打勾跳過。</p>
   <ol>
@@ -192,7 +297,7 @@ dialog::backdrop{background:var(--shade)}
   </div>
 </section>
 
-<section class="step" data-step="switch">
+<section class="step" id="s-switch" data-step="switch">
   <div class="head"><span class="num">4</span><h2>網頁版、桌面版換成公司帳號</h2></div>
   <ul>
     <li>網頁版：左下角頭像，切換到公司帳號。</li>
@@ -203,7 +308,7 @@ dialog::backdrop{background:var(--shade)}
   </div>
 </section>
 
-<section class="step" data-step="connect">
+<section class="step" id="s-connect" data-step="connect">
   <div class="head"><span class="num">5</span><h2>重接連接器</h2></div>
   <p>公司帳號：Settings &gt; Capabilities &gt; Connectors，把 Gmail、Google 日曆、Google Drive、Slack、Notion、Asana 這些常用的重新接一次。</p>
   <div class="foot">
@@ -212,7 +317,7 @@ dialog::backdrop{background:var(--shade)}
   </div>
 </section>
 
-<section class="step" data-step="terminal" data-terminal>
+<section class="step" id="s-terminal" data-step="terminal" data-terminal>
   <div class="head"><span class="num">6</span><h2>終端機換帳號</h2></div>
   <ol>
     <li>在 Claude Code 裡打 <code>/logout</code>，再打 <code>claude</code> 重新登入，選公司組織。</li>
@@ -226,24 +331,21 @@ dialog::backdrop{background:var(--shade)}
   </div>
 </section>
 
-<section class="step" data-step="verify">
+<section class="step" id="s-verify" data-step="verify">
   <div class="head"><span class="num">✓</span><h2>最後檢查</h2></div>
   <ul class="checks">
-    <li><label><input type="checkbox" id="v-memory" data-check> 公司帳號隔天記得你的重要資訊</label></li>
-    <li><label><input type="checkbox" id="v-project" data-check> 要搬的專案都在公司帳號（沒有專案就勾）</label></li>
-    <li><label><input type="checkbox" id="v-org" data-check> 網頁版、桌面版左下角都是公司帳號</label></li>
-    <li><label><input type="checkbox" id="v-connector" data-check> 公司帳號叫得到常用的連接器（例如請它查一封 Gmail）</label></li>
-    <li data-terminal><label><input type="checkbox" id="v-status" data-check> 終端機 <code>/status</code> 顯示公司 email</label></li>
+    <li><label><input type="checkbox" id="v-memory" data-check> <span>公司帳號隔天記得你的重要資訊</span></label></li>
+    <li><label><input type="checkbox" id="v-project" data-check> <span>要搬的專案都在公司帳號（沒有專案就勾）</span></label></li>
+    <li><label><input type="checkbox" id="v-org" data-check> <span>網頁版、桌面版左下角都是公司帳號</span></label></li>
+    <li><label><input type="checkbox" id="v-connector" data-check> <span>公司帳號叫得到常用的連接器（例如請它查一封 Gmail）</span></label></li>
+    <li data-terminal><label><input type="checkbox" id="v-status" data-check> <span>終端機 <code>/status</code> 顯示公司 email</span></label></li>
   </ul>
   <p class="finish" id="finish" hidden>全部完成，搬家成功。個人帳號還在，想翻舊對話隨時回得去。</p>
 </section>
+</div>
+</div>
 
-<div class="bottom">
-  <button type="button" class="link" data-terminal data-t="t1">看全部技術說明與官方來源</button>
-  <button type="button" class="link" id="reset">清除勾選重新開始</button>
-</div>
-</div>
-<p class="muted">版本 2026-09-23 v3。依 2026-09 一次真實搬家的實測寫成，畫面跟這頁不一樣時，以你看到的為準。</p>
+<p class="muted foot-note">版本 2026-09-23 v3。依 2026-09 一次真實搬家的實測寫成，畫面跟這頁不一樣時，以你看到的為準。</p>
 </div>
 
 <dialog id="tech" aria-labelledby="tech-title">
@@ -340,8 +442,10 @@ dialog::backdrop{background:var(--shade)}
 
   function render(){
     var term = state.who === 'terminal';
-    document.getElementById('guide').hidden = !state.who;
-    document.getElementById('mode').textContent = term ? '終端機＋桌面版指南・進度' : '桌面版和網頁版指南・進度';
+    var guide = document.getElementById('guide');
+    guide.hidden = !state.who;
+    if (state.who) guide.dataset.who = state.who;
+    document.getElementById('mode').textContent = term ? '終端機＋桌面版・進度' : '桌面版和網頁版・進度';
     document.querySelectorAll('.card').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.who === state.who)); });
     document.querySelectorAll('[data-terminal]').forEach(function(el){ el.hidden = !term; });
     var steps = Array.prototype.filter.call(document.querySelectorAll('[data-done]'), function(cb){ return !cb.closest('.step').hidden; });
@@ -349,6 +453,8 @@ dialog::backdrop{background:var(--shade)}
     steps.forEach(function(cb){
       cb.checked = !!state.done[cb.dataset.done];
       cb.closest('.step').classList.toggle('done', cb.checked);
+      var nav = document.querySelector('[data-nav="' + cb.dataset.done + '"]');
+      if (nav) nav.classList.toggle('done', cb.checked);
       if (cb.checked) n++;
     });
     var checks = Array.prototype.filter.call(document.querySelectorAll('[data-check]'), function(cb){ return !cb.closest('li').hidden; });
@@ -357,6 +463,7 @@ dialog::backdrop{background:var(--shade)}
     document.getElementById('count').textContent = n + ' / ' + steps.length + ' 步';
     document.getElementById('fill').style.width = (n / steps.length * 100) + '%';
     document.querySelector('[data-step="verify"]').classList.toggle('done', allChecked);
+    document.querySelector('[data-nav="verify"]').classList.toggle('done', allChecked);
     document.getElementById('finish').hidden = !(allChecked && n === steps.length);
   }
 
@@ -383,11 +490,13 @@ dialog::backdrop{background:var(--shade)}
   dlg.addEventListener('click', function(e){ if (e.target === dlg && dlg.close) dlg.close(); });
 
   document.querySelectorAll('[data-copy]').forEach(function(copyBtn){
+    var label = copyBtn.textContent;
     copyBtn.addEventListener('click', function(){
       var el = document.getElementById(copyBtn.dataset.copy);
-      function selectText(){ var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); copyBtn.textContent = '已選取，按 Cmd+C 複製'; }
+      function flash(t){ copyBtn.textContent = t; setTimeout(function(){ copyBtn.textContent = label; }, 2000); }
+      function selectText(){ var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); flash('已選取，按 Cmd+C'); }
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(el.textContent).then(function(){ copyBtn.textContent = '已複製'; }, selectText);
+        navigator.clipboard.writeText(el.textContent).then(function(){ flash('已複製'); }, selectText);
       } else selectText();
     });
   });
