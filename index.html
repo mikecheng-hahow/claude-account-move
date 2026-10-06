@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap">
 <style>
 /* Layout：滿版搬家看板。桌機上方是「標題＋搬家清單 | AI 帶你做」雙欄，下方是「進度側欄 | 步驟雙欄」；手機全部疊成一欄。
-   配色走 hahow.in 主站青綠，只做淺色版（Mike 2026-09-23 裁示）。 */
+   配色走 hahow.in 主站青綠，只做淺色版（已裁示）。 */
 :root{
   --ground:#F2F5F7; --paper:#FFFFFF; --ink:#1F2A2E; --muted:#68757A; --line:#DFE5E8;
   --brand:#007A6B; --brand-ink:#FFFFFF; --brand-soft:#E3F7F4; --teal-fill:#00CCB4;
@@ -41,7 +41,8 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(-
 .page{display:flex;flex-direction:column;gap:clamp(40px,5vw,72px)}
 
 /* ── Hero ── */
-.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:start;padding-top:clamp(36px,6vw,88px)}
+.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:start;padding-top:clamp(28px,4vw,56px)}
+.hero-main{align-self:center}
 .hero-main{display:flex;flex-direction:column;gap:20px;min-width:0}
 .route{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-weight:700;font-size:.9rem}
 .route .acct{border:1.5px solid var(--ink);border-radius:999px;padding:3px 14px;background:var(--paper)}
@@ -51,13 +52,14 @@ h1{font-size:clamp(2.4rem,5.2vw,4.6rem);font-weight:900;letter-spacing:-.02em;li
 h1 .line{display:block}
 h1 .accent{color:var(--brand)}
 .lead{font-size:clamp(1.02rem,1.3vw,1.15rem);max-width:34em}
+li,.muted,.note{text-wrap:pretty}
 
 /* 搬家清單：什麼搬得走、什麼要重接、什麼留下 */
 .manifest{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
 .manifest div{background:var(--paper);padding:16px 18px;display:flex;flex-direction:column;gap:4px;min-width:0}
 .manifest .k{font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:.12em;color:var(--muted)}
 .manifest .v{font-weight:900;font-size:1.05rem}
-.manifest .d{font-size:.88rem;color:var(--muted);line-height:1.6}
+.manifest .d{font-size:.88rem;color:var(--muted);line-height:1.6;text-wrap:pretty}
 .manifest .go .v{color:var(--brand)}
 .manifest .stay .v{color:var(--muted)}
 
@@ -76,7 +78,7 @@ h1 .accent{color:var(--brand)}
 
 /* 提示句：文字靠左、複製鈕靠右 */
 .prompt{display:flex;align-items:center;justify-content:space-between;gap:20px;border-radius:var(--radius);padding:16px 16px 16px 20px;background:var(--brand-soft);color:var(--ink)}
-.prompt-text{flex:1 1 auto;min-width:0;text-align:left;line-height:1.7;overflow-wrap:anywhere}
+.prompt-text{flex:1 1 auto;min-width:0;text-align:left;line-height:1.7;overflow-wrap:anywhere;text-wrap:pretty}
 .ai .prompt-text .url{color:var(--teal-fill);font-weight:500}
 .ai .prompt{background:rgba(255,255,255,.08);color:var(--deep-ink);border:1px solid rgba(255,255,255,.16)}
 .copy{flex:none;align-self:center;font-weight:700;font-size:.9rem;padding:9px 18px;border-radius:8px;border:none;background:var(--brand);color:var(--brand-ink);cursor:pointer;white-space:nowrap;transition:background .15s}
