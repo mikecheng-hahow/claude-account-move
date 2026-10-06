@@ -38,6 +38,10 @@ header{padding-top:44px;display:flex;flex-direction:column;gap:10px}
 .three div{background:var(--paper);border-radius:8px;padding:12px 14px;font-size:.93rem;line-height:1.6}
 .three b{display:block;font-weight:900;font-size:1rem;margin-bottom:2px}
 @media (max-width:560px){.three{grid-template-columns:1fr}}
+.ai{background:var(--brand-soft);border-radius:8px;padding:14px 16px;line-height:1.7}
+.ai h2{font-size:1.05rem;font-weight:900;margin:0 0 6px}
+.ai ul{margin:0 0 8px;padding-left:1.2em}
+.ai blockquote{margin:0;background:var(--paper);border-radius:6px;padding:8px 12px;font-size:.93rem}
 
 .pick,#guide{display:flex;flex-direction:column;gap:10px}
 #guide{gap:20px}
@@ -90,6 +94,7 @@ dialog::backdrop{background:var(--shade)}
 </head>
 <body>
 
+
 <div class="wrap">
 <header>
   <span class="tag">個人帳號 → 公司帳號</span>
@@ -97,6 +102,16 @@ dialog::backdrop{background:var(--shade)}
   <p>照著做、每步打勾就好。進度會記在這台電腦的瀏覽器裡。</p>
   <p class="muted">個人帳號本來就是用公司 email 註冊的？官方有自動併入流程，不用照這頁做，看<a href="https://support.claude.com/en/articles/9267400-move-your-personal-claude-account-to-a-team-or-enterprise-organization" target="_blank" rel="noopener">官方說明</a>。</p>
 </header>
+
+<section class="ai" aria-labelledby="ai-title">
+  <h2 id="ai-title">看不懂？讓 AI 帶你做</h2>
+  <ul>
+    <li><b>只用桌面版和網頁版</b>：先開 claude.ai 網頁版、登入個人帳號，把這頁網址貼給 Claude，請它一步一步帶你做。接著開桌面版、登入公司帳號，跟著它逐步完成。</li>
+    <li><b>用終端機</b>：在終端機開 <code>claude</code>（還是個人帳號），把這頁網址貼給它，請它一步一步帶你做。接著開桌面版、登入公司帳號逐步完成，最後終端機重新登入公司帳號。終端機步驟比較少，資料都在自己電腦上，不會不見。</li>
+  </ul>
+  <p style="margin:0 0 6px">可以直接複製這句貼給 Claude：</p>
+  <blockquote>請讀 https://mikecheng-hahow.github.io/claude-account-move/ ，照裡面的步驟一步一步帶我把 Claude 個人帳號搬到公司帳號。每次只講一步，等我說做完再講下一步。</blockquote>
+</section>
 
 <div class="three">
   <div><b>要手動搬</b>官方沒有一鍵搬家。</div>
