@@ -38,10 +38,9 @@ header{padding-top:44px;display:flex;flex-direction:column;gap:10px}
 .three div{background:var(--paper);border-radius:8px;padding:12px 14px;font-size:.93rem;line-height:1.6}
 .three b{display:block;font-weight:900;font-size:1rem;margin-bottom:2px}
 @media (max-width:560px){.three{grid-template-columns:1fr}}
-.ai{background:var(--brand-soft);border-radius:8px;padding:14px 16px;line-height:1.7}
-.ai h2{font-size:1.05rem;font-weight:900;margin:0 0 6px}
-.ai ul{margin:0 0 8px;padding-left:1.2em}
-.ai blockquote{margin:0;background:var(--paper);border-radius:6px;padding:8px 12px;font-size:.93rem}
+.ai{background:var(--paper);border-radius:8px;padding:16px 20px;display:flex;flex-direction:column;gap:8px;border-top:4px solid var(--teal-fill)}
+.ai h3{margin-top:4px}
+.ai .prompt span{word-break:break-all}
 
 .pick,#guide{display:flex;flex-direction:column;gap:10px}
 #guide{gap:20px}
@@ -105,12 +104,23 @@ dialog::backdrop{background:var(--shade)}
 
 <section class="ai" aria-labelledby="ai-title">
   <h2 id="ai-title">看不懂？讓 AI 帶你做</h2>
-  <ul>
-    <li><b>只用桌面版和網頁版</b>：先開 claude.ai 網頁版、登入個人帳號，把這頁網址貼給 Claude，請它一步一步帶你做。接著開桌面版、登入公司帳號，跟著它逐步完成。</li>
-    <li><b>用終端機</b>：在終端機開 <code>claude</code>（還是個人帳號），把這頁網址貼給它，請它一步一步帶你做。接著開桌面版、登入公司帳號逐步完成，最後終端機重新登入公司帳號。終端機步驟比較少，資料都在自己電腦上，不會不見。</li>
-  </ul>
-  <p style="margin:0 0 6px">可以直接複製這句貼給 Claude：</p>
-  <blockquote>請讀 https://mikecheng-hahow.github.io/claude-account-move/ ，照裡面的步驟一步一步帶我把 Claude 個人帳號搬到公司帳號。每次只講一步，等我說做完再講下一步。</blockquote>
+  <h3>只用桌面版和網頁版</h3>
+  <ol>
+    <li>開 claude.ai 網頁版，登入個人帳號</li>
+    <li>貼上下面那句，請 Claude 一步一步帶你做</li>
+    <li>開桌面版，登入公司帳號，跟著逐步完成</li>
+  </ol>
+  <h3>用終端機</h3>
+  <ol>
+    <li>終端機開 <code>claude</code>（還是個人帳號），貼上下面那句</li>
+    <li>開桌面版，登入公司帳號，跟著逐步完成</li>
+    <li>最後終端機重新登入公司帳號</li>
+  </ol>
+  <p class="muted">終端機步驟比較少，資料都在自己電腦上，不會不見。</p>
+  <div class="prompt">
+    <span id="ai-prompt">請讀 https://mikecheng-hahow.github.io/claude-account-move/ ，照裡面的步驟一步一步帶我把 Claude 個人帳號搬到公司帳號。每次只講一步，等我說做完再講下一步。</span>
+    <button type="button" data-copy="ai-prompt">複製這句</button>
+  </div>
 </section>
 
 <div class="three">
@@ -159,7 +169,7 @@ dialog::backdrop{background:var(--shade)}
   <p>設定頁找不到記憶文字？在個人帳號的新對話裡貼這句，把回覆存下來：</p>
   <div class="prompt">
     <span id="memory-prompt">請把你對我的記憶逐字寫出來，完全照你記憶裡的原文，不要摘要、不要改寫。</span>
-    <button type="button" id="copy-prompt">複製</button>
+    <button type="button" id="copy-prompt" data-copy="memory-prompt">複製</button>
   </div>
   <p class="muted">公司帳號找不到 Memory，代表管理員關掉了記憶功能，請管理員開啟。</p>
   <div class="foot">
@@ -372,13 +382,14 @@ dialog::backdrop{background:var(--shade)}
   document.getElementById('close-tech').addEventListener('click', function(){ dlg.close ? dlg.close() : dlg.removeAttribute('open'); });
   dlg.addEventListener('click', function(e){ if (e.target === dlg && dlg.close) dlg.close(); });
 
-  var copyBtn = document.getElementById('copy-prompt');
-  copyBtn.addEventListener('click', function(){
-    var el = document.getElementById('memory-prompt');
-    function selectText(){ var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); copyBtn.textContent = '已選取，按 Cmd+C 複製'; }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(el.textContent).then(function(){ copyBtn.textContent = '已複製'; }, selectText);
-    } else selectText();
+  document.querySelectorAll('[data-copy]').forEach(function(copyBtn){
+    copyBtn.addEventListener('click', function(){
+      var el = document.getElementById(copyBtn.dataset.copy);
+      function selectText(){ var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); copyBtn.textContent = '已選取，按 Cmd+C 複製'; }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(el.textContent).then(function(){ copyBtn.textContent = '已複製'; }, selectText);
+      } else selectText();
+    });
   });
 
   render();
